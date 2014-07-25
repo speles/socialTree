@@ -10,7 +10,7 @@
 const float NODE_SIZE = 60;
 
 const float PADDING_X = 20;
-const float PADDING_Y = 180;
+const float PADDING_Y = 120;
 
 struct SceneNode
 {
