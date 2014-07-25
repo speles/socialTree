@@ -58,6 +58,8 @@ void MainWidget::wheelEvent(QWheelEvent* e)
 {
     const float SCALING_SPEED = 1.001;
     float coef = pow(SCALING_SPEED, e->delta());
+    if (coef*scale_ > 1.0e9)
+        return;
 
     //Getting scene coordinates of current screen center
     QPointF center = QPointF(sceneRect_.left() + e->x()/scale_, sceneRect_.top() + e->y()/scale_);
