@@ -8,11 +8,13 @@ MainWidget* widget;
 MainWidget::MainWidget(QWidget *parent) :
     QGLWidget(parent)
 {
+    textureManager_ = new TextureManager();
     resetCamera();
 }
 
 MainWidget::~MainWidget()
 {
+    delete textureManager_;
     //Clear render data
     render.clearVBOs();
     render.clearBuffers();
@@ -107,24 +109,9 @@ void MainWidget::initializeGL()
     timer.start(12, this);
 }
 
-uint MainWidget::loadTexture(const QImage& image)
+uint MainWidget::loadTexture(const QString& imagePath)
 {
-    if (!image.valid(1, 1))
-        return 0;
-
-    uint id = bindTexture(image);
-
-    // Set nearest filtering mode for texture minification
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-    // Set bilinear filtering mode for texture magnification
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Wrap texture coordinates by repeating
-    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    return id;
+    return textureManager_->getTexture(imagePath);
 }
 
 void MainWidget::initShaders()
@@ -254,6 +241,5 @@ Vertex2F MainWidget::getCirclePoint(int id, int detalization, Vertex2F& circleCe
 
 void MainWidget::unloadTexture(uint id)
 {
-    if (id)
-        deleteTexture(id);
+    textureManager_->freeTexture(id);
 }

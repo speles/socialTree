@@ -12,6 +12,7 @@
 #include "VBORender.h"
 #include "../core/scenegraph.h"
 #include "RenderTypes.h"
+#include "TextureManager.h"
 
 
 class MainWidget : public QGLWidget, protected QGLFunctions
@@ -22,7 +23,7 @@ public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
     void updateScene();
-    uint loadTexture(const QImage& image);
+    uint loadTexture(const QString &imagePath);
     void unloadTexture(uint id);
 protected:
     void mousePressEvent(QMouseEvent *e);
@@ -40,6 +41,8 @@ protected:
 
     void updateProjection();
 private:
+    TextureManager* textureManager_;
+
     QBasicTimer timer;
     QGLShaderProgram program;
 

@@ -86,8 +86,7 @@ sRequest RequestProvider::ProcessLine(QString line) {
     if (cmdString == "ADD")
     {
         qDebug() << filePath << "\n";
-        QImage image(filePath.trimmed());
-        req.id = widget->loadTexture(image);
+        req.id = widget->loadTexture(filePath.trimmed());
         req.cmd = ADD;
     } else
     {
