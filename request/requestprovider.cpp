@@ -41,28 +41,27 @@ void RequestProvider::readClient() {
     int idusersocs=clientSocket->socketDescriptor();
     QTextStream os(clientSocket);
     os.setAutoDetectUnicode(true);
-    QString clientMsg;
     while (clientSocket->bytesAvailable())
     {
-        clientMsg = clientSocket->readAll();
+        QString clientMsg(clientSocket->readLine());
         qDebug() << clientMsg;
-    }
-
-    if (clientMsg == "BYE\n")
-    {
-        os << "DISCONNECTED.";
-        clientSocket->close();
-        SClients.remove(idusersocs);
-        return;
-    }
-    try {
-         sRequest req = ProcessLine(clientMsg);
-        handler->processRequest(req);
-        os << "OK\n";
-    }
-    catch (...)
-    {
-        os << "Failed.\n";
+        if (clientMsg == "BYE\n")
+        {
+            os << "DISCONNECTED.";
+            clientSocket->close();
+            SClients.remove(idusersocs);
+            return;
+        }
+        try
+        {
+            sRequest req = ProcessLine(clientMsg);
+            handler->processRequest(req);
+            os << "OK\n";
+        }
+        catch (...)
+        {
+            os << "Failed.\n";
+        }
     }
 }
 
