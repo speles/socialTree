@@ -6,6 +6,12 @@ TextureManager::TextureManager()
 {
 }
 
+TextureManager::~TextureManager()
+{
+    for (size_t i = 0; i < textures_.size(); i++)
+        unloadTexture(textures_[i].openglId);
+}
+
 uint TextureManager::getTexture(const QString& imagePath)
 {
     for (size_t i = 0; i < textures_.size(); i++)

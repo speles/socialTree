@@ -18,6 +18,7 @@ class TextureManager
 {
 public:
     TextureManager();
+    ~TextureManager();
     uint getTexture(const QString& imagePath);
     void freeTexture(uint id);
 private:
